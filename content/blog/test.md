@@ -11,11 +11,8 @@ tags:
 
 This is content post
 
-<div>
 <external-link
-  href="https://www.deploymachinelearning.com/"
+  href="https://veekaybee.github.io/2019/02/13/data-science-is-different/"
   title="Deploy Machine Learning Models with Django"
   description="Version 1.0 (04/11/2019) Piotr Płoński The demand for Machine Learning (ML) applications is growing. Many resources..."
-  picture="/uploads/images/2019-12-14/how-to-manage-your-machine-learning-workflow.jpeg"
-></external-link>
-</div>
+  picture="/uploads/images/2019-12-14/how-to-manage-your-machine-learning-workflow.jpeg" />

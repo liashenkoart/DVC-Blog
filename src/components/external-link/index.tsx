@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { getHostname } from '../../utils/getHostname';
+
 interface IExternalLinkProps {
   href?: string;
   title?: string;
@@ -19,7 +21,7 @@ export const ExternalLink = ({
         <div className="elp-description-holder">
           <h4 className="elp-title">{title}</h4>
           <div className="elp-description">{description}</div>
-          <div className="elp-link">deploymachinelearning.com</div>
+          <div className="elp-link">{getHostname(href)}</div>
         </div>
         <div className="elp-image-holder">
           <img src={picture} style={{ maxWidth: 700 }} />
