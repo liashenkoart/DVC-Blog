@@ -7,11 +7,9 @@ import { useWindowScroll, useWindowSize } from 'react-use';
 import { IBlogPostData } from '../../templates/blog-post';
 
 import { getCommentsCount } from '../../api';
-// import { siteLinks } from '../../data';
 import { pluralizeComments } from '../../utils/i18n';
 import { renderAst } from '../../utils/renderAst';
 
-// import Markdown from '../markdown';
 import Meta from '../meta';
 import PseudoButton from '../pseudo-button';
 import Share from '../share';
@@ -102,7 +100,6 @@ function Post({ htmlAst, timeToRead, frontmatter, fields }: IBlogPostData) {
         </>
       )}
       <div className={styles.content}>{renderAst(htmlAst)}</div>
-      {/*<Markdown html={html} />*/}
       {tags && (
         <div className={styles.tags}>
           {tags.map(tag => (
