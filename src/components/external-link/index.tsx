@@ -24,7 +24,7 @@ export const ExternalLink = ({
           <div className="elp-link">{getHostname(href)}</div>
         </div>
         <div className="elp-image-holder">
-          <img src={picture} style={{ maxWidth: 700 }} />
+          <img src={picture} />
         </div>
       </section>
     </a>

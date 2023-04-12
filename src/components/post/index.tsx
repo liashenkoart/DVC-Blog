@@ -8,8 +8,9 @@ import { IBlogPostData } from '../../templates/blog-post';
 
 import { getCommentsCount } from '../../api';
 import { pluralizeComments } from '../../utils/i18n';
-import { renderAst } from '../../utils/renderAst';
+// import { renderAst } from '../../utils/renderAst';
 
+import Markdown from '../markdown';
 import Meta from '../meta';
 import PseudoButton from '../pseudo-button';
 import Share from '../share';
@@ -99,7 +100,9 @@ function Post({ htmlAst, timeToRead, frontmatter, fields }: IBlogPostData) {
           )}
         </>
       )}
-      <div className={styles.content}>{renderAst(htmlAst)}</div>
+      <div className={styles.content}>
+        <Markdown htmlAst={htmlAst} />
+      </div>
       {tags && (
         <div className={styles.tags}>
           {tags.map(tag => (
