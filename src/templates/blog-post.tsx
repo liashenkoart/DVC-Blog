@@ -46,7 +46,7 @@ export interface IBlogPostData {
 
 interface IBlogPostTemplateProps {
   data: {
-    markdownRemark: IBlogPostData;
+    post: IBlogPostData;
   };
   pageContext: {
     next: IBlogPostData;
@@ -54,9 +54,7 @@ interface IBlogPostTemplateProps {
   };
 }
 
-function BlogPostTemplate({ data }: IBlogPostTemplateProps) {
-  const post = data.markdownRemark;
-
+function BlogPostTemplate({ data: { post } }: IBlogPostTemplateProps) {
   return (
     <Layout>
       <SEO
@@ -76,9 +74,10 @@ export default BlogPostTemplate;
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {
-    markdownRemark(fields: { slug: { eq: $slug } }) {
+    post: markdownRemark(fields: { slug: { eq: $slug } }) {
       id
       excerpt(format: HTML)
+      html
       htmlAst
       timeToRead
       fields {

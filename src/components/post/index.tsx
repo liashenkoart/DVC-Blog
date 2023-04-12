@@ -8,7 +8,6 @@ import { IBlogPostData } from '../../templates/blog-post';
 
 import { getCommentsCount } from '../../api';
 import { pluralizeComments } from '../../utils/i18n';
-// import { renderAst } from '../../utils/renderAst';
 
 import Markdown from '../markdown';
 import Meta from '../meta';
