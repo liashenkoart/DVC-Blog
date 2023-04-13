@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const _ = require('lodash');
 const { createFilePath } = require('gatsby-source-filesystem');
 const { siteMetadata } = require('./gatsby-config');
 
@@ -7,28 +8,25 @@ exports.createPages = async ({ graphql, actions }) => {
   const { createPage } = actions;
 
   const blogPost = path.resolve('./src/templates/blog-post.tsx');
-  const result = await graphql(
-    `
-      {
-        allMarkdownRemark(
-          sort: { fields: [frontmatter___date], order: DESC }
-          filter: { fileAbsolutePath: { regex: "/content/blog/" } }
-          limit: 1000
-        ) {
-          edges {
-            node {
-              fields {
-                slug
-              }
-              frontmatter {
-                title
-              }
+  const result = await graphql(`
+    {
+      allMarkdownRemark(
+        filter: { fields: { collection: { eq: "blog" } } }
+        sort: { fields: frontmatter___date, order: DESC }
+      ) {
+        edges {
+          node {
+            fields {
+              slug
+            }
+            frontmatter {
+              title
             }
           }
         }
       }
-    `
-  );
+    }
+  `);
 
   if (result.errors) {
     throw result.errors;
@@ -37,15 +35,15 @@ exports.createPages = async ({ graphql, actions }) => {
   // Create blog posts pages.
   const posts = result.data.allMarkdownRemark.edges;
 
-  posts.forEach((post, index) => {
+  posts.forEach(({ node: post }, index) => {
     const previous = index === posts.length - 1 ? null : posts[index + 1].node;
     const next = index === 0 ? null : posts[index - 1].node;
 
     createPage({
-      path: post.node.fields.slug,
+      path: post.fields.slug,
       component: blogPost,
       context: {
-        slug: post.node.fields.slug,
+        slug: post.fields.slug,
         previous,
         next
       }
@@ -57,6 +55,19 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   const { createNodeField } = actions;
 
   if (node.internal.type === 'MarkdownRemark') {
+    // Get the parent node
+    const parent = getNode(_.get(node, 'parent'));
+    // Create a field on this node for the "collection" of the parent
+    // NOTE: This is necessary so we can filter `allMarkdownRemark` by
+    // `collection` otherwise there is no way to filter for only markdown
+    // documents of type `post`.
+    createNodeField({
+      node,
+      name: 'collection',
+      value: _.get(parent, 'sourceInstanceName')
+    });
+
+    // Get slug
     const value = createFilePath({ node, getNode }).replace(/^\/[0-9\-]*/, '/');
     createNodeField({
       name: 'slug',
@@ -72,8 +83,8 @@ exports.onPostBuild = async function({ graphql }) {
   const result = await graphql(`
     {
       allMarkdownRemark(
-        sort: { fields: [frontmatter___date], order: DESC }
-        filter: { fileAbsolutePath: { regex: "/content/blog/" } }
+        filter: { fields: { collection: { eq: "blog" } } }
+        sort: { fields: frontmatter___date, order: DESC }
         limit: 3
       ) {
         edges {
