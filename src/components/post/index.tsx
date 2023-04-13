@@ -100,7 +100,7 @@ function Post({ htmlAst, timeToRead, frontmatter, fields }: IBlogPostData) {
         </>
       )}
       <div className={styles.content}>
-        <Markdown htmlAst={htmlAst} />
+        <Markdown html={htmlAst} />
       </div>
       {tags && (
         <div className={styles.tags}>

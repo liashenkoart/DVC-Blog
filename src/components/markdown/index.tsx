@@ -5,9 +5,14 @@ import { renderAst } from '../../utils/renderAst';
 import styles from './styles.module.css';
 
 interface IMarkdownProps {
-  html?: string;
-  htmlAst?: string;
+  html: string;
 }
+
+function Markdown({ html }: IMarkdownProps) {
+  return <div className={styles.wrapper}>{renderAst(html)}</div>;
+}
+
+export default Markdown;
 
 /*
 function Markdown({ html }: IMarkdownProps) {
@@ -18,17 +23,13 @@ function Markdown({ html }: IMarkdownProps) {
     />
   );
 }
-*/
-
-function Markdown({ html, htmlAst }: IMarkdownProps) {
   return htmlAst ? (
-    <div className={styles.wrapper}>{renderAst(htmlAst)}</div>
+    <div className={styles.wrapper}>{renderAst(html)}</div>
   ) : (
     <div
       className={styles.wrapper}
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
-}
 
-export default Markdown;
+*/
