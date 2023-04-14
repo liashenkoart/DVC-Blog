@@ -21,6 +21,8 @@ exports.createPages = async ({ graphql, actions }) => {
             }
             frontmatter {
               title
+              date
+              commentsUrl
             }
           }
         }
@@ -77,8 +79,8 @@ exports.onCreateNode = ({ node, actions, getNode }) => {
   }
 };
 
+// TODO dont use generated public folder, create file in static folder static/api/posts.json in createPages hook
 // Create json to use on https://dvc.org/community
-
 exports.onPostBuild = async function({ graphql }) {
   const result = await graphql(`
     {
@@ -133,3 +135,25 @@ exports.onPostBuild = async function({ graphql }) {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir);
   fs.writeFileSync(filepath, JSON.stringify({ posts }));
 };
+
+/*
+  // Create /api/posts.json
+  const data = posts.slice(0, 3).map(
+    ({
+      node: {
+        fields: { slug },
+        frontmatter: { title, date, commentsUrl }
+      }
+    }) => {
+      const url = `${siteMetadata.siteUrl}${slug}`;
+      return {
+        url,
+        title,
+        date,
+        commentsUrl
+      };
+    }
+  );
+  const filepath = path.resolve(__dirname, 'static', 'api', 'posts.json');
+  fs.writeFileSync(filepath, JSON.stringify({ posts: data }));
+*/
